@@ -1,0 +1,36 @@
+extends layout
+
+block content
+ 
+  
+  input(type="button" value="Long Operation" id='btnLong')
+  br
+  br
+  br
+  <p id='pLong' ></p>
+  input(type="button" value="Simple Operation" id='btnSimple')
+
+  <p id='pSimple' ></p>
+  
+ 
+  script.
+    $("#btnSimple").click(function() {
+      $("#pSimple").html(`Loading....`);
+      let time =  `${new Date().getHours()}: ${new Date().getMinutes()}: ${new Date().getSeconds()}: ${new Date().getMilliseconds()}`;
+        $.get(`http://localhost:3000/stack/simpleoperation?time=${time}`, function(data, status){
+          $("#pSimple").html(`
+          
+           <p>client sent at: ${data.clientSentAt}</p>
+           <p>server recieved at: ${data.receivedTime}</p>
+           <p>server responded at: ${data.responseTime}</p>`)
+        });
+
+    });
+    $("#btnLong").click(function() {
+        $("#pLong").html(`Loading....`);
+        $.get(`http://localhost:3000/stack/longoperationasync`, function(data, status){
+          $("#pLong").html(`
+           <p>sent at: ${data.receivedTime}</p>
+           <p>server response at: ${data.responseTime}</p>`)
+        });
+    });
